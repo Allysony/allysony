@@ -42,9 +42,8 @@ jobs:
                 dateStyle: 'short'
               }).format(new Date(comment.updatedAt));
             const guestbookTable = result.repository.issue.comments.nodes.reduce((table, comment) => {
-              const avatar = `https://images.weserv.nl/?url=${encodeURIComponent(comment.author.avatarUrl)}&h=24&w=24&fit=cover&mask=circle&maxage=7d`;
-            
-              const authorInfo = `<a href="${comment.author.url}"><img width="24" height="24" src="${avatar}" alt="${comment.author.login}"> ${comment.author.login}</a>`;
+              const roundedAvatarUrl = `https://images.weserv.nl/?url=${encodeURIComponent(comment.author.avatarUrl)}&h=24&w=24&fit=cover&mask=circle&maxage=7d`;
+              const authorInfo = `<a href="${comment.author.url}"><img width="24" height="24" src="${roundedAvatarUrl}" alt="${comment.author.login}"> ${comment.author.login}</a>`;
               const formattedDate = new Intl.DateTimeFormat('en-US', {
                 dateStyle: 'short'
               }).format(new Date(comment.updatedAt));
