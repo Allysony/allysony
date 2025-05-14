@@ -2,7 +2,7 @@
 
 
 
-Thanks for stopping by! Don't forget to sign the guestbook while you're here.
+Thanks for stopping by! Don't forget to sign the guestbook [here](https://github.com/Allysony/allysony/issues/1).
 
 ### Guestbook 📖
 <!-- Guestbook -->
