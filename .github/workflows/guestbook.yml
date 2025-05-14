@@ -37,9 +37,20 @@ jobs:
               issue_number: context.issue.number
             };
             const result = await github.graphql(query, variables);
+            
+            const date = new Intl.DateTimeFormat('en-US', {
+                dateStyle: 'short'
+              }).format(new Date(comment.updatedAt));
             const guestbookTable = result.repository.issue.comments.nodes.reduce((table, comment) => {
-              return `${table}| <a href="${comment.author.url}"><img width="24" src="${comment.author.avatarUrl}" alt="${comment.author.login}"></a> ${comment.author.login} | ${new Date(comment.updatedAt).toLocaleString()} | ${comment.bodyText} |\n`;
-            }, "| Name | Date | Message |\n|---|---|---|\n");
+              const avatar = `https://images.weserv.nl/?url=${encodeURIComponent(comment.author.avatarUrl)}&h=24&w=24&fit=cover&mask=circle&maxage=7d`;
+            
+              const authorInfo = `<a href="${comment.author.url}"><img width="24" height="24" src="${avatar}" alt="${comment.author.login}"> ${comment.author.login}</a>`;
+              const formattedDate = new Intl.DateTimeFormat('en-US', {
+                dateStyle: 'short'
+              }).format(new Date(comment.updatedAt));
+            
+             return `${table}| ${authorInfo} | ${formattedDate} | ${comment.bodyText} |\n`;
+            }, "| Author | Date | Message |\n|---|---|---|\n");
             const fs = require('fs');
             const readme = fs.readFileSync('README.md', 'utf8');
             const updatedReadme = readme.replace(
@@ -52,5 +63,5 @@ jobs:
         run: |
           git config --global user.name 'Github Actions'
           git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git commit -am '[bot] feat: update guestbook'
+          git commit -am 'chore: update guestbook'
           git push
