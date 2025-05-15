@@ -43,8 +43,14 @@ jobs:
               const formattedDate = new Intl.DateTimeFormat('en-US', {
                 dateStyle: 'short'
               }).format(new Date(comment.updatedAt));
-            
-             return `${table}| ${authorInfo} | ${formattedDate} | ${comment.bodyText} |\n`;
+              const processedBodyText = comment.bodyText.replace(
+                /<img([^>]*?)>/g,
+                (match, attributes) => {
+                  const srcMatch = attributes.match(/src="([^"]+)"/);
+                  return `<img src="${srcMatch ? srcMatch[1] : ''}" width="300" height="auto">`;
+                }
+             );
+             return `${table}| ${authorInfo} | ${formattedDate} | ${processedBodyText} |\n`;
             }, "| Author | Date | Message |\n|---|---|---|\n");
             const fs = require('fs');
             const readme = fs.readFileSync('README.md', 'utf8');
